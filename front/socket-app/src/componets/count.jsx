@@ -15,7 +15,7 @@ export default function Count() {
       socket.send(JSON.stringify(count + 1))
       setCount(count + 1)
    }
-   const subCount = () => {fi
+   const subCount = () => {
          socket.send(JSON.stringify(count - 1))
          setCount(count - 1)
    }
