@@ -1,19 +1,26 @@
-var server = require('ws').Server;
-var s = new server({port:5000});
+let app = require('express')();
+let http = require('http').createServer(app);
+let io = require('socket.io')(http,{
+    cors: {
+        origin: '*',
+        methods: ["GET", "POST"]
+    }
+});
 
-s.on('connection',function(ws){
-    ws.on('message',(message) => {
-        const json = JSON.parse(message);
-        console.log("Received: " + json);
-        s.clients.forEach((client) => {
-            if(client.readyState === ws.OPEN){
-                client.send(json);
-            }
-        });
+io.on('connection', (socket) => {
+    console.log('a user connected', socket.id);
+    socket.join('all');
+    io.sockets.emit('count', socket.client.conn.server.clientsCount);
+    socket.on('message', (data) => {
+        console.log('message', data);
+        socket.broadcast.emit('message', data);
     });
+});
 
-    ws.on('close',function(){
-        console.log('I lost a client');
-    });
+io.on('disconnect', () => {
+    console.log('user disconnected');
+});
 
+http.listen(5000, () => {
+    console.log('listening on *:5000');
 });

@@ -1,11 +1,22 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-// import App from './App.jsx'
-import Socket from './componets/socket'
 import './index.css'
+import { Global, css } from '@emotion/react'
+import Socket from './componets/socket'
+import 'tailwindcss/tailwind.css'
+
+const globalStyles = 
+  css`
+    body {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+  `
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <Socket />
-  </React.StrictMode>,
+    <React.StrictMode>
+      <Global styles={globalStyles} />
+      <Socket />
+    </React.StrictMode>
 )
